@@ -2,9 +2,9 @@
 //= Global Functions
 //===== Por: =================================================
 //= Lupus, kobra_k88
-//===== Versão Atual: ========================================
+//===== Vers?o Atual: ========================================
 //= 2.13
-//===== Comentários Adicionais: ==============================
+//===== ComentÃ¡rios Adicionais: ==============================
 //= Added F_ClearJobVar - on getting a new job it clears all Job Quest variables
 //= Removed individual job check functions as they were redundant [kobra_k88]
 //= 1.3 Added Job Change Function for Baby/Normal Classes
@@ -33,7 +33,7 @@
 //= 2.12 Added more unused vars to F_ClearGarbage [Lupus]
 //= 2.13 Added more unused vars to F_ClearGarbage [Lupus]
 //= 2.14 Added old novice variables to F_ClearGarbage. [L0ne_W0lf]
-//= 2.14a Traduzido e Adicionado as funções antigas do Cronus.
+//= 2.14a Traduzido e Adicionado as funÃ§Ãµes antigas do Cronus.
 //============================================================
 
 
@@ -141,25 +141,13 @@ function	script	F_RandMes	{
 	return getarg(rand(1,getarg(0)));
 }
 
-
-//////////////////////////////////////////////////////////////////////////////////
-// *** Function "F_Sex"
-//////////////////////////////////////////////////////////////////////////////////
-//returns 1st string if female, 2nd string otherwise
-// Example: mes callfunc("F_Sex","Mas que bela dama!","Mas que belo rapaz!");
-
-function	script	F_SexMes	{
-	return getarg(Sex);
-}
-
-
 //////////////////////////////////////////////////////////////////////////////////
 // *** Function "F_Hi"
 //////////////////////////////////////////////////////////////////////////////////
 //returns random HELLO message
 
 function	script	F_Hi	{
-	return callfunc("F_RandMes",5,"Oi!","Olá!","Bom-dia!","Como vai?","Olá amigo.");
+	return callfunc("F_RandMes",5,"Oi!","OlÃ¡!","Bom-dia!","Como vai?","OlÃ¡ amig"+ ( Sex ) ? "o":"a");
 }
 
 
@@ -169,7 +157,7 @@ function	script	F_Hi	{
 //returns random BYE message
 
 function	script	F_Bye	{
-	return callfunc("F_RandMes",6,"Tchau. Te vejo depois.","Até mais.","Adeus.","Boa sorte!","Tenha um bom dia!","Tchauzinho!!!");
+	return callfunc("F_RandMes",6,"Tchau. Te vejo depois.","AtÃ© mais.","Adeus.","Boa sorte!","Tenha um bom dia!","Tchauzinho!!!");
 }
 
 
@@ -186,28 +174,18 @@ function	script	F_Bye	{
 //  is equal to: mes "Show me your ^000090 +5 VVS Fire Knife ^000000..."
 
 function	script	F_ItemName	{
-	set @t$,"^000090";
-	if(getarg(3)) set @t$,@t$+"+"+getarg(3)+" ";
-	if(getarg(2)==1) set @t$,@t$+"Forte ";
-	if(getarg(2)==2) set @t$,@t$+"Muito Forte ";
-	if(getarg(2)==3) set @t$,@t$+"Fortíssima ";
-	if(getarg(2)>3) set @t$,@t$+getarg(2)+"x Fortíssima ";
-	if(getarg(1)==1) set @t$,@t$+"Glacial ";
-	if(getarg(1)==2) set @t$,@t$+"Mineral ";
-	if(getarg(1)==3) set @t$,@t$+"Flamejante ";
-	if(getarg(1)==4) set @t$,@t$+"Trovejante ";
-	if(getarg(1)>4) set @t$,@t$+"Strange ";
-	return @t$+getitemname(getarg(0))+"^000000";
-}
-
-
-//////////////////////////////////////////////////////////////////////////////////
-// *** Function "getJobName"							//
-// [Usage] : callfunc("getJobName",Class);                                      //
-//////////////////////////////////////////////////////////////////////////////////
-
-function	script	getJobName	{
-	return jobname(getarg(0));
+	set .@t$,"^000090";
+	if(getarg(3)) set @t$,@t$+"+"+getarg(3);
+	if(getarg(2)==1) set @t$,@t$+"Forte";
+	if(getarg(2)==2) set @t$,@t$+"Muito Forte";
+	if(getarg(2)==3) set @t$,@t$+"FortÃ­ssima";
+	if(getarg(2)>3) set @t$,@t$+getarg(2)+"x FortÃ­ssima";
+	if(getarg(1)==1) set @t$,@t$+"Glacial";
+	if(getarg(1)==2) set @t$,@t$+"Mineral";
+	if(getarg(1)==3) set @t$,@t$+"Flamejante";
+	if(getarg(1)==4) set @t$,@t$+"Trovejante";
+	if(getarg(1)>4) set @t$,@t$+"Strange";
+	return @t$+getitemname(getarg(0))+" ^000000";
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -251,7 +229,7 @@ function	script	F_Load2Skills	{
 }
 
 //////////////////////////////////////////////////////////////////////////////////
-// Funções by [Mehah]
+// FunÃ§Ãµes by [Mehah]
 //////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -277,24 +255,24 @@ function	script	skill:questload	{
 
 function	script	skill:add	{
 	if (Zeny < getarg(0)){
-		mes "Desculpe, mas você não possui zeny suficiente.";
+		mes "Desculpe, mas vocÃª nÃ£o possui zeny suficiente.";
 		close;
 	}
-	for(set @i,1; @i <= getarg(1); set @i,@i+1){
-		if(getskilllv(getarg(@i+1)) == FALSE){
-			skill getarg(@i+1),1,0;
-			setarray @skill_name$[@i],callfunc("getskillname",getarg(@i+1));
+	for(set .@i,1; .@i <= getarg(1); set .@i,.@i+1){
+		if(getskilllv(getarg(.@i+1)) == FALSE){
+			skill getarg(.@i+1),1,0;
+			setarray .@skill_name$[.@i],callfunc("getskillname",getarg(.@i+1));
 		}else
-		if(@i == getarg(1)){
-			mes "Você já possui as habilidades!";
+		if(.@i == getarg(1)){
+			mes "VocÃª jÃ¡ possui as habilidades!";
 			close;
 		}
 	}
 		set zeny, Zeny - getarg(0);
-		mes "Parabéns, acabou de receber sua(s) habilidades(s).";
-		for(set @i,1;@i <= getarraysize(@skill_name$); set @i,@i+1)
-			mes @skill_name$[@i];
-		cleararray @skill_name$[1],"",getarraysize(@skill_name$);
+		mes "ParabÃ©ns, acabou de receber sua(s) habilidades(s).";
+		for(set .@i,1;.@i <= getarraysize(.@skill_name$); set .@i,.@i+1)
+			mes .@skill_name$[.@i];
+		cleararray .@skill_name$[1],"",getarraysize(.@skill_name$);
 		close;
 }
 ////////////////////////////////////////////////////////////////////////////////// 
@@ -307,7 +285,7 @@ function	script	getskillname	{
 		case 143: return "Fingir de Morto"; 
 		case 144: return "Recuperar HP em Movimento"; 
 		case 145: return "Ataque Fatal"; 
-		case 146: return "Instinto de Sobrevivência"; 
+		case 146: return "Instinto de SobrevivÃªncia"; 
 		case 147: return "Fabricar Flechas"; 
 		case 148: return "Disparo Violento"; 
 		case 149: return "Chutar Areia"; 
@@ -318,40 +296,40 @@ function	script	getskillname	{
 		case 154: return "Personalizar Carrinho"; 
 		case 155: return "Grito de Guerra"; 
 		case 156: return "Luz Divina"; 
-		case 157: return "Proteção Arcana"; 
-		case 1001: return "Avanço Ofensivo"; 
-		case 1002: return "Submissão"; 
-		case 1003: return "Lâminas Aceleradas"; 
+		case 157: return "ProteÃ§Ã£o Arcana"; 
+		case 1001: return "AvanÃ§o Ofensivo"; 
+		case 1002: return "SubmissÃ£o"; 
+		case 1003: return "LÃ¢minas Aceleradas"; 
 		case 1004: return "Faca Envenenada"; 
 		case 1005: return "Confinamento"; 
-		case 1006: return "Explosão Protetora"; 
+		case 1006: return "ExplosÃ£o Protetora"; 
 		case 1007: return "Criar Conversor Elemental"; 
-		case 1008: return "Mudança Elemental - Água"; 
+		case 1008: return "MudanÃ§a Elemental - Ã¡gua"; 
 		case 1009: return "Flecha Fantasma"; 
 		case 1010: return "Voz Dolorosa"; 
 		case 1011: return "Piscadela"; 
 		case 1012: return "Venda Duvidosa"; 
-		case 1013: return "Ganância"; 
-		case 1014: return "Martírio"; 
-		case 1015: return "Concessão Espiritual"; 
+		case 1013: return "GanÃ¢ncia"; 
+		case 1014: return "MartÃ­rio"; 
+		case 1015: return "ConcessÃ£o Espiritual"; 
 		case 1016: return "Punhos Intensos"; 
-		case 1017: return "Mudança Elemental - Terra"; 
-		case 1018: return "Mudança Elemental - Fogo"; 
-		case 1019: return "Mudança Elemental - Vento"; 
-		case 8001: return "Cura pelas Mãos"; 
-		case 10000: return "Autorização Oficial"; 
+		case 1017: return "MudanÃ§a Elemental - Terra"; 
+		case 1018: return "MudanÃ§a Elemental - Fogo"; 
+		case 1019: return "MudanÃ§a Elemental - Vento"; 
+		case 8001: return "Cura pelas M?os"; 
+		case 10000: return "AutorizaÃ§Ã£o Oficial"; 
 		case 10001: return "Contrato com Kafra"; 
-		case 10002: return "Comandar Guardiões"; 
-		case 10003: return "Fortalecer Guardiões"; 
-		case 10004: return "Expandir Clã"; 
-		case 10005: return "Glória da Guilda"; 
-		case 10006: return "Grande Liderança"; 
-		case 10007: return "Ferimentos de Glória"; 
-		case 10008: return "Coração Frio"; 
+		case 10002: return "Comandar GuardiÃµes"; 
+		case 10003: return "Fortalecer GuardiÃµes"; 
+		case 10004: return "Expandir ClÃ£"; 
+		case 10005: return "GlÃ³ria da Guilda"; 
+		case 10006: return "Grande LideranÃ§a"; 
+		case 10007: return "Ferimentos de GlÃ³ria"; 
+		case 10008: return "CoraÃ§Ã£o Frio"; 
 		case 10009: return "Olhar Apurado"; 
 		case 10010: return "Comando de Batalha"; 
-		case 10011: return "Regeneração"; 
-		case 10012: return "Restauração"; 
+		case 10011: return "RegeneraÃ§Ã£o"; 
+		case 10012: return "RestauraÃ§Ã£o"; 
 		case 10013: return "Chamado Urgente"; 
 		case 10014: return "Desenvolvimento Permanente"; 
 		default: return "^FF0000Habilidade Desconhecida^000000"; 
