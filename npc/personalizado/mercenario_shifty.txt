@@ -1,139 +1,138 @@
 //===== Cronus Script ================================================= 
-//= Mercen·rio Shifty
+//= Mercen√°rio Shifty
 //===== Por: ==========================================================
 //= acky - god@acky.com
-//===== Vers„o Atual: ================================================= 
-//= 1.3a CR / 1.0 eA
-//===== DescriÁ„o: ==================================================== 
+//===== Vers√£o Atual: ================================================= 
+//= 1.4 CR / 1.0 eA
+//===== Descri√ß√£o: ==================================================== 
 //= Jogadores compram Ninjas para assassinar outros jogadores
 //===== Changelog: ==================================================== 
 //= 1.0 Script incicial. [acky]
 //= 1.1 Traduzido. [Mehah]
-//= 1.1a Corrigido algumas traduÁıes. [Mehah]
-//= 1.2 Otimizado e algumas correÁıes. [RoM]
-//= 1.3 Removido a vari·vel do npc_athena.conf (ele n„o existe mais). [RoM]
+//= 1.1a Corrigido algumas tradu√ß√µes. [Mehah]
+//= 1.2 Otimizado e algumas corre√ß√µes. [RoM]
+//= 1.3 Removido a vari√°vel do npc_athena.conf (ele n√£o existe mais). [RoM]
 //= 1.3a Removido show e digit [Keoy]
+//= 1.4 Trocado tipo de vari√°veis e Menu otimizado [Eru Yuuko]
 //=====================================================================
 
-morocc,148,86,5	script	Mercen·rio Shifty	725,{
+morocc,148,86,5	script	Mercen√°rio Shifty	725,{
 
-//========== ConfiguraÁ„o: ==========
+//========== Configura√ß√£o: ==========
 // Custo para cada ninja:
 set .@custo,250000;
 //===================================
 
-	mes "[Mercen·rio Shifty]";
-	mes "O que vocÍ deseja?";
+	mes "[Mercen√°rio Shifty]";
+	mes "O que voc√™ deseja?";
 	set .@loop,1;
 	while(.@loop){
 		next;
-		if(getgmlevel() > 90) set .@menu$,select("Comprar Ninjas","Assassinar alguÈm","Verificar seus Ninjas","Adicionar Ninjas","Cancelar");
-		else set .@menu$,select("Comprar Ninjas","Assassinar alguÈm","Verificar seus Ninjas","","Cancelar");
-		switch(.@menu$){
-
-			Case 1:
-			mes "[Mercen·rio Shifty]";
-			mes "Quantos ninjas vocÍ deseja comprar?";
-			mes "H· ^0000FF" + $ninja_avail + "^000000 ninjas disponÌveis.";
+		switch(select("Comprar Ninjas:Assassinar algu√©m:Verificar seus Ninjas:"+ ( getgmlevel() > 90 ) ? "Adicionar Ninjas:":"" +"Cancelar")){
+			case 1:
+			mes "[Mercen√°rio Shifty]";
+			mes "Quantos ninjas voc√™ deseja comprar?";
+			mes "H√° ^0000FF" + $ninja_avail + "^000000 ninjas dispon√≠veis.";
 			mes "Custa ^0000FF" + .@custo + " zeny ^000000cada um.";
-			input @buy;
+			input .@buy;
 			next;
-			mes "[Mercen·rio Shifty]";
+			mes "[Mercen√°rio Shifty]";
 			if($ninja_avail < 1){
-				mes "N„o h· nenhum ninja disponÌvel para comprar.";
-				close;
-				}
-			if($ninja_avail < @buy){
-				mes "A quantidade de ninjas que vocÍ quer n„o est· disponÌvel.";
+				mes "N√£o h√° nenhum ninja dispon√≠vel para comprar.";
 				break;
-				}
-			set @price,@buy*.@custo;
-			if(Zeny < @price){
-				mes "VocÍ n„o tem o zeny necess·rio.";
-				close;
-				}
-			mes "Isso custar· a vocÍ ^0000FF"+@price+" zeny^000000.";
+			}
+			if($ninja_avail < .@buy){
+				mes "A quantidade de ninjas que voc√™ quer n√£o est√° dispon√≠vel.";
+				break;
+			}
+			set .@price,.@buy*.@custo;
+			if(Zeny < .@price){
+				mes "Voc√™ n√£o tem o zeny necess√°rio.";
+				break;
+			}
+			mes "Isso custar√° a voc√™ ^0000FF"+.@price+" zeny^000000.";
 			next;
-			if(select("Continuar","Cancelar") == 2) close;
-			set Zeny,Zeny-@price;
-			set #ninjas,#ninjas+@buy;
-			set $ninja_avail,$ninja_avail-@buy;
-			mes "[Mercen·rio Shifty]";
+			if(select("Continuar","Cancelar") == 2) break;
+			set Zeny,Zeny-.@price;
+			set #ninjas,#ninjas+.@buy;
+			set $ninja_avail,$ninja_avail-.@buy;
+			mes "[Mercen√°rio Shifty]";
 			mes "Obrigado.";
-			close;
+			break;
 
-			Case 2:
-			mes "[Mercen·rio Shifty]";
+			case 2:
+			mes "[Mercen√°rio Shifty]";
 			if(agitcheck()){
-				mes "Desculpe, todos meus ninjas est„o ocupados na Guerra de Emperium.";
+				mes "Desculpe, todos meus ninjas est√£o ocupados na Guerra de Emperium.";
 				close;
-				}
+			}
 			mes "Ponha o nome do alvo.";
-			mes "^FF0000Datilografe o nome exatamente, se n„o, eu n„o poderei encontrar a vÌtima.^000000";
+			mes "^FF0000Datilografe o nome exatamente, se n√£o, eu n√£o poderei encontrar a v√≠tima.^000000";
 			next;
 			if(select("Continuar","Cancelar") == 2) close;
-			input @name$;
-			mes "[Mercen·rio Shifty]";
+			input .@name$;
+			mes "[Mercen√°rio Shifty]";
 			mes "Ninjas Ativos: "+#ninjas;
 			mes "Ninjas Descansando: "+#ninjasr;
-			mes "Quantos vocÍ quer emitir?";
-			input @number;
+			mes "Quantos voc√™ quer emitir?";
+			input .@number;
 			next;
-			mes "[Mercen·rio Shifty]";
-			if (@number < 1){
-				mes "VocÍ n„o pode emitir nenhum ninja ou quantidade negativa.";
+			mes "[Mercen√°rio Shifty]";
+			if (!.@number){
+				mes "Voc√™ n√£o pode emitir nenhum ninja ou quantidade negativa.";
 				break;
-				}
-			if (@number > #ninjas){
-				mes "VocÍ n„o tem esta quantidade de ninjas.";
+			}
+			if (.@number > #ninjas){
+				mes "Voc√™ n√£o tem esta quantidade de ninjas.";
 				break;
-				}
-			if (@number > 10){
-				mes "VocÍ sÛ pode emitir 10 ninjas no m·ximo.";
+			}
+			if (.@number > 10){
+				mes "Voc√™ s√≥ pode emitir 10 ninjas no m√°ximo.";
 				break;
-				}
-			set @chance,rand(1,12);
-			set #ninjas,#ninjas-@number;
+			}
+			set .@chance,rand(1,12);
+			set #ninjas,#ninjas-.@number;
 			set #ninjas,#ninjas+#ninjasr;
 			set #ninjasr,0;
 			mes "Emitindo ninjas agora.";
 			next;
-			mes "[Mercen·rio Shifty]";
-			if(@number < @chance){
-				set @ninjasurvived,rand (1,@number);
-				set #ninjasr,@number-@ninjasurvived;
+			mes "[Mercen√°rio Shifty]";
+			if(.@number < .@chance){
+				set .@ninjasurvived,rand (1,.@number);
+				set #ninjasr,.@number-.@ninjasurvived;
 				mes "Seu ataque falhou e somente ^FF0000"+#ninjasr+"^000000 Ninjas sobreviveram.";
-				announce @name$+" sobreviveu os ataque dos Ninjas de "+strcharinfo(0)+".",8;
+				announce .@name$+" sobreviveu os ataque dos Ninjas de "+strcharinfo(0)+".",8;
 				close;
-				}
-			set @ninjasurvived,rand (1,@number);
-			set #ninjasr,@number-@ninjasurvived;
+			}
+			set .@ninjasurvived,rand (1,.@number);
+			set #ninjasr,.@number-.@ninjasurvived;
 			mes "Seu ataque foi bem sucedido, mas somente ^FF0000"+#ninjasr+"^000000 Ninjas sobreviveram.";
-			atcommand strcharinfo(0) + "@kill "+@name$;
+			atcommand strcharinfo(0) + "@kill "+.@name$;
 			announce @name$+" foi assassinado pelos Ninjas de "+strcharinfo(0)+".",8;
 			close;
 
-			Case 3:
-			mes "[Mercen·rio Shifty]";
-			mes "VocÍ tem:";
+			case 3:
+			mes "[Mercen√°rio Shifty]";
+			mes "Voc√™ tem:";
 			mes "^FF0000" + #ninjas + "^000000 Ninjas Ativos.";
 			mes "^0000FF" + #ninjasr + "^000000 Ninjas Descansando.";
 			break;
 
-			Case 4:
-			mes "[Mercen·rio Shifty]";
-			mes "Quantos ninjas disponÌveis vocÍ deseja adicionar?";
+			case 4:
+			mes "[Mercen√°rio Shifty]";
+			mes "Quantos ninjas dispon√≠veis voc√™ deseja adicionar?";
 			next;
-			input @add;
-			set $ninja_avail,$ninja_avail+@add;
-			mes "[Mercen·rio Shifty]";
-			mes ""+@add+" ninjas adicionados. Total de "+$ninja_avail+" disponÌveis.";
+			input .@add;
+			set $ninja_avail,$ninja_avail+.@add;
+			mes "[Mercen√°rio Shifty]";
+			mes .@add+" ninjas adicionados. Total de "+$ninja_avail+" dispon√≠veis.";
 			close;
 
-			Case 5:
-			close;
-			}
+			case 5:
+			break;
 		}
+		close;
+	}
 
 OnInit:
 	set $ninja_avail,$ninja_avail+1;
